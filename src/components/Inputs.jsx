@@ -11,7 +11,9 @@ function Inputs({ setQuery, units, setUnits }) {
   };
 
   const handleSearchClick = () => {
-    if (city !== "") setQuery({ q: city });
+    if (city === ""){
+          toast.info("Plese enter city ");
+    }else{ setQuery({ q: city })};
   };
 
   const handleLocationClick = () => {

@@ -10,23 +10,29 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
-  const [query, setQuery] = useState({ q: "berlin" });
+  const [query, setQuery] = useState({ q: "" });
   const [units, setUnits] = useState("metric");
   const [weather, setWeather] = useState(null);
 
   useEffect(() => {
     const fetchWeather = async () => {
+      if (query.q === "") {
+               return;
+      }
       const message = query.q ? query.q : "current location.";
-
+      
       toast.info("Fetching weather for " + message);
 
-      await getFormattedWeatherData({ ...query, units }).then((data) => {
-        toast.success(
-          `Successfully fetched weather for ${data.name}, ${data.country}.`
-        );
+      await getFormattedWeatherData({ ...query, units })
+        .then((data) => {
+          toast.success(
+            `Successfully fetched weather for ${data.name}, ${data.country}.`
+          );
 
-        setWeather(data);
-      });
+          setWeather(data);
+        }).catch((err) => {
+          toast.error(`${message} is not a valid city name`);
+        });;
     };
 
     fetchWeather();
